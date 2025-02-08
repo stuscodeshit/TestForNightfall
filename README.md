@@ -11,7 +11,7 @@ This project is purely html and CONTAINS NO BATCH ANYWHERE. THERE IS NO BATCH IN
  
 [AC3](https://discord.com/users/917886650951008276) (cant code for shit but adds images pretty well)
  
-[Stu](https://discord.com/users/879868861162324049) (The cooler, main developer)
+[Stu](https://discord.com/users/879868861162324049) (A fucking cunt.)
 
 commit Update README.mdicide
 
