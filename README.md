@@ -8,5 +8,5 @@
  
 [Stu](https://discord.com/users/879868861162324049)
 
-fuck you stu
+skibidi sigma
 
