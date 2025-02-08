@@ -10,5 +10,5 @@ our devoted "team" is very serious about working EXTREMELY HARD TO NOT FORGET AB
  
 [AC3](https://discord.com/users/917886650951008276) (cant code well but can do some stuff)
  
-[Stu](https://discord.com/users/879868861162324049) ()
+[Stu](https://discord.com/users/879868861162324049) (THE GOAAAAAAAAAAAATTTTTTTTT)
 
