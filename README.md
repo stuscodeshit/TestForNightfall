@@ -6,7 +6,7 @@ our devoted "team" is very serious about working EXTREMELY HARD TO NOT FORGET AB
 ## Developers:
 [kraeb](https://discord.com/users/721608676783423499) (does c sharp well ig...)
  
-[kxtz](https://discord.com/users/952792525637312552) (moral support)
+[kxtz](https://discord.com/users/952792525637312552) (moral support, housekeeper)
  
 [AC3](https://discord.com/users/917886650951008276) (cant code well but can do some stuff)
  
