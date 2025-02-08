@@ -2,6 +2,8 @@
 
 * {
     font-family: "Fira Code", monospace;
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
@@ -9,9 +11,14 @@ body {
     background-color: #1e1e2e;
     color: #cba6f7;
     overflow-x: hidden;
-    margin: 0;
-    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
+
+/*
+###############################################################################################################
+*/
 
 .header {
     display: flex;
@@ -60,14 +67,85 @@ body {
         padding: 15px;
     }
 
+    .header img {
+        width: 2rem;
+        height: 2rem;
+    }
+
     .title {
         position: static;
         transform: none;
         margin: 10px 0;
+        font-size: 0.9rem;
     }
 
     .nav-links {
         justify-content: center;
         margin-top: 10px;
     }
+
+    .nav-links a {
+        font-size: 0.6rem;
+    }
 }
+
+/*
+###############################################################################################################
+*/
+
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.main .input {
+    border: 2px solid #cba6f7;
+    border-radius: 5px;
+    color: #cba6f7;
+    background-color: #35354f;
+    text-align: center;
+    height: 2rem;
+    width: 15rem;
+    margin-top: 10px;
+}
+
+.main img {
+    width: 10%;
+    height: 10%;
+}
+
+@media (max-width: 600px) {
+    .main img {
+        width: 30%;
+        height: 30%;
+    }
+    .main .input {
+        font-size: 0.5rem;
+        height: 2rem;
+        width: 10rem;
+    }
+}
+
+/*
+###############################################################################################################
+*/
+
+.footer {
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #35354f;
+    padding: 10px 20px;
+    width: 100%;
+    font-size: 0.5rem;
+}
+
+.footer a {
+    color: #F7A6E8;
+}
+  
