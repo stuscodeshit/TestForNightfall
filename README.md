@@ -8,3 +8,5 @@
  
 [Stu](https://discord.com/users/879868861162324049)
 
+hahahahahahahahhahahahahaha im in the readme fuck you guys
+
