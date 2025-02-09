@@ -46,7 +46,16 @@
             } else {
                 console.log("Debug is disabled");
             }
-
+          window.EJS_player = "#game";
+window.EJS_gameName = parts.shift();
+window.EJS_biosUrl = "";
+window.EJS_gameUrl = URL.createObjectURL(input.files[0]);
+window.EJS_core = core;
+window.EJS_pathtodata = "data/";
+window.EJS_startOnLoaded = true;
+window.EJS_DEBUG_XX = enableDebug;
+window.EJS_disableDatabases = true;
+window.EJS_threads = enableThreads;
             if (urlParams.get('threads') == 1) {
                 if (window.SharedArrayBuffer) {
                     enableThreads = true;
