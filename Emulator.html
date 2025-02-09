@@ -168,11 +168,8 @@ window.EJS_threads = enableThreads;
                 sub.id = "game"
                 div.id = "display"
 
-                const top = document.getElementById("top");
-                top.remove();
-                box.remove()
-                div.appendChild(sub)
-                document.body.appendChild(div)
+const top = document.getElementById("top");
+if (top) top.remove();
 
                 window.EJS_player = "#game";
                 window.EJS_gameName = parts.shift();
