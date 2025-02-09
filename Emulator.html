@@ -30,40 +30,52 @@
     </header>
         <div id="top">
             <h1></h1>
-        </div>
-        <div id = box>
+         </div>
+         <div id = box>
             <input type = file id = input>
         </div>
-<div id="box">
+   <div id="box">
     <input type="file" id="input">
-</div>
-
+   </div>
 <script>
 import { useRef, useEffect, useState } from "react";
 import EmulatorJS from "emulatorjs";
+import "./assets/emulator.css";
 
 export default function Emulator() {
   const canvasRef = useRef(null);
   const [emulator, setEmulator] = useState(null);
 
   useEffect(() => {
-    if (canvasRef.current) {
-      const emulatorInstance = new EmulatorJS({
-        canvas: canvasRef.current,
-        systems: ["nes", "snes", "gba", "gb", "genesis"],
-      });
-      setEmulator(emulatorInstance);
-    }
+    const script = document.createElement("script");
+    script.src = "./assets/loader.js";
+    script.onload = () => {
+      if (canvasRef.current) {
+        const emulatorInstance = new EmulatorJS({
+          canvas: canvasRef.current,
+          systems: ["nes", "snes", "gba", "gb", "genesis"],
+        });
+
+        emulatorInstance.initialize().then(() => {
+          setEmulator(emulatorInstance);
+        });
+      }
+    };
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
   }, []);
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
-    if (file) {
+    if (file && emulator) {
       const reader = new FileReader();
       reader.onload = (e) => {
         const romData = new Uint8Array(e.target.result);
-        emulator.loadROM(romData);
-        emulator.start();
+        emulator.loadROM(romData).then(() => {
+          emulator.start();
+        });
       };
       reader.readAsArrayBuffer(file);
     }
@@ -72,7 +84,7 @@ export default function Emulator() {
   return (
     <div className="flex flex-col items-center p-4">
       <canvas ref={canvasRef} width={640} height={480} className="border rounded" />
-      <input type="file" accept=".nes,.snes,.gba,.gb,.genesis" onChange={handleFileUpload} className="mt-2" />
+      <input type="file" accept=".nes,.snes,.gba,.gb,.genesis" onChange={handleFileUpload} className="mt-2" disabled={!emulator} />
     </div>
   );
 }
