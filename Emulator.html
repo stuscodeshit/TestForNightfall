@@ -64,8 +64,12 @@
     }
 
     input.onchange = async () => {
-        const file = input.files[0];
-        if (!file) return;
+const file = input.files[0];
+if (!file) return;
+
+// Define parts, jackass/
+const parts = file.name.includes(".") ? file.name.split(".") : [file.name];
+const extension = parts.length > 1 ? parts.pop().toLowerCase() : "";
         
         const parts = file.name.split(".");
         const extension = parts.pop().toLowerCase();
