@@ -39,156 +39,129 @@
 </div>
 
 <script>
-    let enableDebug = false;
-    let enableThreads = false;
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
+input.onchange = async () => {
+    const file = input.files[0];
+    if (!file) return;
 
-    if (urlParams.get('debug') == 1) {
-        enableDebug = true;
-        console.log("Debug is enabled");
-    } else {
-        console.log("Debug is disabled");
-    }
+    // Ensure parts is always valid
+    const parts = file.name.includes(".") ? file.name.split(".") : [file.name];
+    const extension = parts.length > 1 ? parts.pop().toLowerCase() : "";
 
-    if (urlParams.get('threads') == 1) {
-        if (window.SharedArrayBuffer) {
-            enableThreads = true;
-            console.log("Threads are enabled");
-        } else {
-            console.warn("Threads are disabled as SharedArrayBuffer is not available.");
-            console.log("Threads are disabled");
-        }
-    } else {
-        console.log("Threads are disabled");
-    }
+    const core = await (async (ext) => {
+        const coreMappings = {
+            "fds": "nes", "nes": "nes", "unif": "nes", "unf": "nes",
+            "smc": "snes", "fig": "snes", "sfc": "snes", "gd3": "snes", "gd7": "snes",
+            "dx2": "snes", "bsx": "snes", "swc": "snes",
+            "z64": "n64", "n64": "n64",
+            "pce": "pce",
+            "ngp": "ngp", "ngc": "ngp",
+            "ws": "ws", "wsc": "ws",
+            "col": "coleco", "cv": "coleco",
+            "d64": "vice_x64sc",
+            "nds": "nds", "gba": "gba", "gb": "gb"
+        };
 
-    input.onchange = async () => {
-const file = input.files[0];
-if (!file) return;
+        if (coreMappings[ext]) return coreMappings[ext];
 
-// Define parts, jackass/
-const parts = file.name.includes(".") ? file.name.split(".") : [file.name];
-const extension = parts.length > 1 ? parts.pop().toLowerCase() : "";
-        
-        const parts = file.name.split(".");
-        const extension = parts.pop().toLowerCase();
-
-        const core = await (async (ext) => {
-            const coreMappings = {
-                "fds": "nes", "nes": "nes", "unif": "nes", "unf": "nes",
-                "smc": "snes", "fig": "snes", "sfc": "snes", "gd3": "snes", "gd7": "snes",
-                "dx2": "snes", "bsx": "snes", "swc": "snes",
-                "z64": "n64", "n64": "n64",
-                "pce": "pce",
-                "ngp": "ngp", "ngc": "ngp",
-                "ws": "ws", "wsc": "ws",
-                "col": "coleco", "cv": "coleco",
-                "d64": "vice_x64sc",
-                "nds": "nds", "gba": "gba", "gb": "gb"
+        return await new Promise(resolve => {
+            const coreValues = {
+                "Nintendo 64": "n64",
+                "Nintendo Game Boy": "gb",
+                "Nintendo Game Boy Advance": "gba",
+                "Nintendo DS": "nds",
+                "Nintendo Entertainment System": "nes",
+                "Super Nintendo Entertainment System": "snes",
+                "PlayStation": "psx",
+                "Virtual Boy": "vb",
+                "Sega Mega Drive": "segaMD",
+                "Sega Master System": "segaMS",
+                "Sega CD": "segaCD",
+                "Atari Lynx": "lynx",
+                "Sega 32X": "sega32x",
+                "Atari Jaguar": "jaguar",
+                "Sega Game Gear": "segaGG",
+                "Sega Saturn": "segaSaturn",
+                "Atari 7800": "atari7800",
+                "Atari 2600": "atari2600",
+                "Arcade": "arcade",
+                "NEC TurboGrafx-16": "pce",
+                "NEC PC-FX": "pcfx",
+                "SNK NeoGeo Pocket": "ngp",
+                "Bandai WonderSwan": "ws",
+                "ColecoVision": "coleco",
+                "Commodore 64": "vice_x64sc",
+                "Commodore 128": "vice_x128",
+                "Commodore VIC20": "vice_xvic",
+                "Commodore Plus/4": "vice_xplus4",
+                "Commodore PET": "vice_xpet"
             };
 
-            if (coreMappings[ext]) return coreMappings[ext];
+            const select = document.createElement("select");
+            for (const type in coreValues) {
+                const option = document.createElement("option");
+                option.value = coreValues[type];
+                option.textContent = type;
+                select.appendChild(option);
+            }
 
-            return await new Promise(resolve => {
-                const coreValues = {
-                    "Nintendo 64": "n64",
-                    "Nintendo Game Boy": "gb",
-                    "Nintendo Game Boy Advance": "gba",
-                    "Nintendo DS": "nds",
-                    "Nintendo Entertainment System": "nes",
-                    "Super Nintendo Entertainment System": "snes",
-                    "PlayStation": "psx",
-                    "Virtual Boy": "vb",
-                    "Sega Mega Drive": "segaMD",
-                    "Sega Master System": "segaMS",
-                    "Sega CD": "segaCD",
-                    "Atari Lynx": "lynx",
-                    "Sega 32X": "sega32x",
-                    "Atari Jaguar": "jaguar",
-                    "Sega Game Gear": "segaGG",
-                    "Sega Saturn": "segaSaturn",
-                    "Atari 7800": "atari7800",
-                    "Atari 2600": "atari2600",
-                    "Arcade": "arcade",
-                    "NEC TurboGrafx-16": "pce",
-                    "NEC PC-FX": "pcfx",
-                    "SNK NeoGeo Pocket": "ngp",
-                    "Bandai WonderSwan": "ws",
-                    "ColecoVision": "coleco",
-                    "Commodore 64": "vice_x64sc",
-                    "Commodore 128": "vice_x128",
-                    "Commodore VIC20": "vice_xvic",
-                    "Commodore Plus/4": "vice_xplus4",
-                    "Commodore PET": "vice_xpet"
-                };
+            const button = document.createElement("button");
+            button.textContent = "Load game";
+            button.onclick = () => resolve(select.value);
 
-                const select = document.createElement("select");
-                for (const type in coreValues) {
-                    const option = document.createElement("option");
-                    option.value = coreValues[type];
-                    option.textContent = type;
-                    select.appendChild(option);
-                }
+            box.innerHTML = "";
+            box.appendChild(select);
+            box.appendChild(button);
+        });
+    })(extension);
 
-                const button = document.createElement("button");
-                button.textContent = "Load game";
-                button.onclick = () => resolve(select.value);
+    if (!core) {
+        alert("Unsupported file type. Please select a valid ROM.");
+        return;
+    }
 
-                box.innerHTML = "";
-                box.appendChild(select);
-                box.appendChild(button);
-            });
-        })(extension);
+    const div = document.createElement("div");
+    const sub = document.createElement("div");
+    sub.id = "game";
+    div.id = "display";
 
-        if (!core) {
-            alert("Unsupported file type. Please select a valid ROM.");
-            return;
-        }
+    const top = document.getElementById("top");
+    if (top) top.remove();
+    box.remove();
 
-        const div = document.createElement("div");
-        const sub = document.createElement("div");
-        sub.id = "game";
-        div.id = "display";
+    div.appendChild(sub);
+    document.body.appendChild(div);
 
-        const top = document.getElementById("top");
-        if (top) top.remove();
-        box.remove();
+    window.EJS_player = "#game";
+    window.EJS_gameName = parts.length > 0 ? parts.join(".") : file.name;
+    window.EJS_biosUrl = "";
+    window.EJS_gameUrl = URL.createObjectURL(file);
+    window.EJS_core = core;
+    window.EJS_pathtodata = "data/";
+    window.EJS_startOnLoaded = true;
+    window.EJS_DEBUG_XX = enableDebug;
+    window.EJS_disableDatabases = true;
+    window.EJS_threads = enableThreads;
 
-        div.appendChild(sub);
-        document.body.appendChild(div);
+    const script = document.createElement("script");
+    script.src = "data/loader.js";
+    script.onerror = () => alert("Error loading emulator. Check that data/loader.js exists.");
+    document.body.appendChild(script);
+};
 
-        window.EJS_player = "#game";
-        window.EJS_gameName = parts.join(".");
-        window.EJS_biosUrl = "";
-        window.EJS_gameUrl = URL.createObjectURL(file);
-        window.EJS_core = core;
-        window.EJS_pathtodata = "data/";
-        window.EJS_startOnLoaded = true;
-        window.EJS_DEBUG_XX = enableDebug;
-        window.EJS_disableDatabases = true;
-        window.EJS_threads = enableThreads;
+// Drag-and-Drop Support for ROM Files
+box.ondragover = (event) => {
+    event.preventDefault();
+    box.setAttribute("drag", true);
+};
 
-        const script = document.createElement("script");
-        script.src = "data/loader.js";
-        script.onerror = () => alert("Error loading emulator. Check that data/loader.js exists.");
-        document.body.appendChild(script);
-    };
+box.ondragleave = () => box.removeAttribute("drag");
 
-    // Drag-and-Drop Support, if your reading this im gonna drag and drop my dick in your ass lololol
-    box.ondragover = (event) => {
-        event.preventDefault();
-        box.setAttribute("drag", true);
-    };
-
-    box.ondragleave = () => box.removeAttribute("drag");
-
-    box.ondrop = (event) => {
-        event.preventDefault();
-        box.removeAttribute("drag");
-        input.files = event.dataTransfer.files;
-        input.dispatchEvent(new Event('change')); // Trigger the existing onchange shit
-    };
+box.ondrop = (event) => {
+    event.preventDefault();
+    box.removeAttribute("drag");
+    input.files = event.dataTransfer.files;
+    input.dispatchEvent(new Event('change')); // Trigger file selection event
+};
 </script>
     <footer class="footer">
       <span>Made with HATE by the <a href="https://github.com/DyingHynixMLC/Nightfall">Nightfall</a> team</span>
