@@ -1,9 +1,9 @@
 # Nightfall
 <sub>Site layout inspired by [Nebula](https://github.com/NebulaServices/Nebula)</sub>
 
-Nightfall is a proxy that uses Ultraviolet, BareMux, and Epoxy to free the internet of censorship... okay yeah I give up
+Nightfall is a proxy that uses Ultraviolet, BareMux, and Epoxy to free the internet of censorship... i give up man js use it to unblock sites
 
-You've used a proxy before, you know what this does
+
 
 ## Developers:
 - [kraeb](https://discord.com/users/721608676783423499)
